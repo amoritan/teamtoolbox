@@ -1,0 +1,50 @@
+name: Deploy
+
+# Deploys every app and service that changed since the previous push to main,
+# plus everything that depends on a changed package.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  ASTRO_TELEMETRY_DISABLED: 1
+  WRANGLER_SEND_METRICS: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Deploy only what passes, even if the CI workflow is still running.
+      - run: pnpm check:headers
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Deploy changed apps and services
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            pnpm --filter "...[${BEFORE}]" run --if-present deploy
+          else
+            # First push, or history was rewritten: deploy everything.
+            pnpm -r run --if-present deploy
+          fi

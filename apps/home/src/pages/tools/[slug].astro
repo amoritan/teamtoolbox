@@ -1,0 +1,67 @@
+---
+import { categoryLabels, kindLabels, type Tool, toolOrigin, tools } from '@teamtoolbox/registry'
+import DisplayAd from '../../components/DisplayAd.astro'
+import Base from '../../layouts/Base.astro'
+
+export function getStaticPaths() {
+  return tools.map((tool) => ({ params: { slug: tool.slug }, props: { tool } }))
+}
+
+interface Props {
+  tool: Tool
+}
+
+const { tool } = Astro.props
+const available = tool.status !== 'soon'
+---
+
+<Base title={tool.name} description={tool.tagline}>
+  <article class="max-w-2xl">
+    <p class="mb-2 text-sm text-ink-muted">
+      <a href="/" class="hover:text-ink">Tools</a>
+      <span aria-hidden="true"> / </span>
+      {categoryLabels[tool.category]}
+    </p>
+    <h1 class="mb-4 text-4xl font-semibold tracking-tight">{tool.name}</h1>
+    <p class="mb-6 text-lg leading-relaxed text-ink-muted">{tool.description}</p>
+
+    <div class="mb-10 flex flex-wrap items-center gap-4">
+      {
+        available ? (
+          <a
+            href={toolOrigin(tool.slug)}
+            class="inline-flex items-center rounded-lg bg-accent px-5 py-2.5 font-medium text-accent-ink hover:bg-accent-strong"
+          >
+            Open {tool.name} →
+          </a>
+        ) : (
+          <span class="inline-flex items-center rounded-lg border border-line px-5 py-2.5 font-medium text-ink-muted">
+            Coming soon
+          </span>
+        )
+      }
+      <span class="text-sm text-ink-muted">{kindLabels[tool.kind]}</span>
+    </div>
+
+    <section class="rounded-xl border border-line bg-surface-muted p-5">
+      <h2 class="mb-2 font-semibold">How your data stays private</h2>
+      {
+        tool.kind === 'collaborative' ? (
+          <p class="text-sm leading-relaxed text-ink-muted">
+            Everything is encrypted in your browser before it's sent. The key is part of the link you
+            share, and that part of a link never reaches any server. Our servers only store data
+            they can't read, and the room deletes itself on its expiry date.{' '}
+            <a href="/security" class="text-accent underline underline-offset-2">How it works</a>
+          </p>
+        ) : (
+          <p class="text-sm leading-relaxed text-ink-muted">
+            This tool runs entirely in your browser. Nothing you enter is sent anywhere, and you can
+            export or delete it at any time.
+          </p>
+        )
+      }
+    </section>
+  </article>
+
+  <DisplayAd />
+</Base>

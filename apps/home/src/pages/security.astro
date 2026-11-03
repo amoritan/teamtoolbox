@@ -1,0 +1,94 @@
+---
+import Page from '../layouts/Page.astro'
+---
+
+<Page
+  title="Security"
+  description="How teamtoolbox keeps your team's data private: end-to-end encryption, automatic deletion and no third-party code in the tools."
+>
+  <p>
+    teamtoolbox is built so that we <strong>can't</strong> read what your team puts into it, rather
+    than just promising that we won't. This page explains how, and what it doesn't protect against.
+  </p>
+
+  <h2>Two kinds of tools</h2>
+  <ul>
+    <li>
+      <strong>Tools that stay in your browser</strong> never send what you enter anywhere. It's
+      stored on your device until you export or delete it.
+    </li>
+    <li>
+      <strong>Shared tools</strong>, like retros, sync between everyone holding the link. Everything
+      is encrypted in your browser before it's sent.
+    </li>
+  </ul>
+
+  <h2>The link is the key</h2>
+  <p>
+    When you create a shared room, your browser generates a random 256-bit secret and puts it after
+    the <code>#</code> in the link. Browsers never send that part of a link to any server, so it
+    doesn't appear in our requests, logs or anyone's referrer headers.
+  </p>
+  <p>
+    From that secret, your browser derives the room's ID (which our server sees) and an encryption
+    key (which it never does). Every card, vote, name and comment is encrypted with AES-256-GCM
+    before it leaves your device. The encryption is tied to the specific room and item, so it can't
+    be moved or altered without detection.
+  </p>
+
+  <h2>What our servers can and can't see</h2>
+  <table>
+    <thead>
+      <tr><th>Data</th><th>Visible to us or our host?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cards, votes, comments, names, settings</td><td>No, encrypted in your browser</td></tr>
+      <tr><td>The secret in the link</td><td>No, never sent</td></tr>
+      <tr><td>The room's ID, which tool it's for, when it expires</td><td>Yes</td></tr>
+      <tr><td>How many items a room has, their rough size and timing</td><td>Yes</td></tr>
+      <tr>
+        <td>Your IP address and browser type</td>
+        <td>Our host, Cloudflare, processes them to deliver the site. We don't log or store them.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Everything expires</h2>
+  <p>
+    Each room has a fixed lifetime chosen when it's created, up to 90 days. When it ends, the room
+    deletes everything it stored. Anyone in the room can also wipe it immediately. Room data is
+    stored in the EU.
+  </p>
+
+  <h2>No third-party code in the tools</h2>
+  <p>
+    Tool pages load only our own code and talk only to our own servers. The small ad in each tool is
+    plain text and an image that our code displays. It's not an advertiser's script, so it can't see
+    anything on the page. A strict Content Security Policy enforces this in your browser.
+  </p>
+
+  <h2>What this doesn't protect against</h2>
+  <ul>
+    <li><strong>Anyone who has the link.</strong> Share it only with your team.</li>
+    <li>
+      <strong>A compromised version of our code.</strong> This is true of every web app that
+      encrypts in the browser. We deploy only from our public repository, so changes are visible.
+    </li>
+    <li>
+      <strong>Metadata</strong> such as when a room is used and how many items it holds.
+    </li>
+    <li><strong>A compromised device</strong> belonging to someone in the room.</li>
+  </ul>
+
+  <h2 id="verify">Check it yourself</h2>
+  <p>
+    teamtoolbox is open source under the AGPL-3.0 license, so all of the above can be checked
+    against the code. <a href="/about#source">Where to find the source</a>.
+  </p>
+
+  <h2 id="report">Reporting a vulnerability</h2>
+  <p>
+    Please report security issues privately using GitHub's private vulnerability reporting on our
+    repository, rather than in a public issue. We'll acknowledge reports as quickly as we can.
+  </p>
+</Page>

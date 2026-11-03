@@ -1,0 +1,4 @@
+{
+  "extends": "@teamtoolbox/tsconfig/react.json",
+  "include": ["src", "test"]
+}

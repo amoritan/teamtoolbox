@@ -1,0 +1,4 @@
+{
+  "extends": "@teamtoolbox/tsconfig/browser.json",
+  "include": ["src", "test"]
+}

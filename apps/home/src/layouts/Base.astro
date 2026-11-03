@@ -1,0 +1,57 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description: string
+}
+
+const { title, description } = Astro.props
+const fullTitle = title ? `${title} · teamtoolbox` : 'teamtoolbox: private tools for R&D teams'
+const canonical = new URL(Astro.url.pathname, Astro.site)
+const year = new Date().getFullYear()
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <header class="border-b border-line">
+      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
+        <a href="/" class="text-lg font-semibold tracking-tight hover:text-accent">teamtoolbox</a>
+        <nav aria-label="Main" class="flex gap-5 text-sm text-ink-muted">
+          <a href="/" class="hover:text-ink">Tools</a>
+          <a href="/security" class="hover:text-ink">Security</a>
+          <a href="/about" class="hover:text-ink">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+      <slot />
+    </main>
+
+    <footer class="border-t border-line">
+      <div class="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-6 text-sm text-ink-muted md:flex-row md:justify-between">
+        <p>© {year} teamtoolbox. Open source under AGPL-3.0.</p>
+        <nav aria-label="Legal" class="flex flex-wrap gap-x-4 gap-y-1">
+          <a href="/privacy" class="hover:text-ink">Privacy</a>
+          <a href="/terms" class="hover:text-ink">Terms</a>
+          <a href="/security" class="hover:text-ink">Security</a>
+          <a href="/about#source" class="hover:text-ink">Source code</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

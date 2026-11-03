@@ -1,0 +1,7 @@
+{
+  "extends": "@teamtoolbox/tsconfig/workers.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "@cloudflare/vitest-plugin/types"]
+  },
+  "include": ["src", "test"]
+}

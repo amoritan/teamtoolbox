@@ -1,0 +1,35 @@
+---
+/**
+ * Display ad slot for the directory site only. Renders nothing until AdSense is
+ * approved and configured, so no ad code or consent banner loads before then.
+ * Tool apps never use this: they have their own native AdSlot.
+ *
+ * To enable: set PUBLIC_ADSENSE_CLIENT and PUBLIC_ADSENSE_SLOT at build time,
+ * add Google's consent message in AdSense, and relax this site's CSP
+ * (public/_headers) for the AdSense domains.
+ */
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT
+const slot = import.meta.env.PUBLIC_ADSENSE_SLOT
+const enabled = Boolean(client && slot)
+---
+
+{
+  enabled && (
+    <aside aria-label="Advertisement" class="mx-auto my-10 min-h-[100px] max-w-3xl">
+      <ins
+        class="adsbygoogle block"
+        data-ad-client={client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script
+        is:inline
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`}
+        crossorigin="anonymous"
+      />
+      <script is:inline src="/ads-init.js" />
+    </aside>
+  )
+}

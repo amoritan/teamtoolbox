@@ -1,0 +1,32 @@
+---
+import { categoryLabels, kindLabels, type Tool } from '@teamtoolbox/registry'
+
+interface Props {
+  tool: Tool
+}
+
+const { tool } = Astro.props
+const statusLabel = { live: null, beta: 'Beta', soon: 'Coming soon' }[tool.status]
+---
+
+<a
+  href={`/tools/${tool.slug}`}
+  class="group flex h-full flex-col gap-3 rounded-xl border border-line bg-surface p-5 transition-colors hover:border-accent"
+>
+  <div class="flex items-start justify-between gap-3">
+    <h2 class="text-lg font-semibold group-hover:text-accent">{tool.name}</h2>
+    {
+      statusLabel && (
+        <span class="shrink-0 rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-ink-muted">
+          {statusLabel}
+        </span>
+      )
+    }
+  </div>
+  <p class="flex-1 text-sm leading-relaxed text-ink-muted">{tool.tagline}</p>
+  <div class="flex flex-wrap gap-2 text-xs text-ink-muted">
+    <span>{categoryLabels[tool.category]}</span>
+    <span aria-hidden="true">·</span>
+    <span>{kindLabels[tool.kind]}</span>
+  </div>
+</a>

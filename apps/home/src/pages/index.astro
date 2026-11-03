@@ -1,0 +1,53 @@
+---
+import { tools } from '@teamtoolbox/registry'
+import DisplayAd from '../components/DisplayAd.astro'
+import ToolCard from '../components/ToolCard.astro'
+import Base from '../layouts/Base.astro'
+
+const order = { live: 0, beta: 1, soon: 2 }
+const sorted = [...tools].sort(
+  (a, b) => order[a.status] - order[b.status] || a.name.localeCompare(b.name),
+)
+---
+
+<Base description="Small, free tools for R&D teams. No sign-up, and we can't read your team's data.">
+  <section class="mb-12 max-w-2xl">
+    <h1 class="mb-4 text-4xl font-semibold tracking-tight md:text-5xl">
+      Small tools for R&amp;D teams.
+    </h1>
+    <p class="text-lg leading-relaxed text-ink-muted">
+      Retros, health checks and more. Free, no sign-up, and private by design: what your team
+      types is either kept in your browser or end-to-end encrypted, so even we can't read it.
+    </p>
+  </section>
+
+  <section aria-label="Tools" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {sorted.map((tool) => <ToolCard tool={tool} />)}
+  </section>
+
+  <section class="mt-16 grid gap-8 md:grid-cols-3">
+    <div>
+      <h2 class="mb-2 font-semibold">Encrypted in your browser</h2>
+      <p class="text-sm leading-relaxed text-ink-muted">
+        Shared tools encrypt everything before it leaves your device. The key lives only in the
+        link you share.
+      </p>
+    </div>
+    <div>
+      <h2 class="mb-2 font-semibold">Deleted on schedule</h2>
+      <p class="text-sm leading-relaxed text-ink-muted">
+        Every shared room has an expiry date and wipes itself when it arrives. Anyone in the room
+        can wipe it sooner.
+      </p>
+    </div>
+    <div>
+      <h2 class="mb-2 font-semibold">Nothing to sign up for</h2>
+      <p class="text-sm leading-relaxed text-ink-muted">
+        No accounts and no tracking in the tools. The code is open source, so you can check all of
+        this yourself.
+      </p>
+    </div>
+  </section>
+
+  <DisplayAd />
+</Base>

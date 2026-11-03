@@ -1,0 +1,26 @@
+---
+import Base from './Base.astro'
+
+interface Props {
+  title: string
+  description: string
+  /** Shows a notice that the page still needs review before launch. */
+  draft?: boolean
+}
+
+const { title, description, draft = false } = Astro.props
+---
+
+<Base title={title} description={description}>
+  <article class="prose-page mx-auto max-w-2xl">
+    <h1 class="mb-6 text-3xl font-semibold tracking-tight">{title}</h1>
+    {
+      draft && (
+        <p class="mb-8 rounded-lg border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink">
+          Draft: this page will be reviewed before launch.
+        </p>
+      )
+    }
+    <slot />
+  </article>
+</Base>

@@ -1,0 +1,59 @@
+/*
+ * Shared design tokens for every teamtoolbox app. Import after Tailwind:
+ *
+ *   @import "tailwindcss";
+ *   @import "@teamtoolbox/ui/theme.css";
+ *
+ * Fonts are the system stack on purpose: no font requests to third parties.
+ */
+
+/* Let apps pick up the classes used by this package's components. */
+@source "./";
+
+:root {
+  --ttb-surface: #ffffff;
+  --ttb-surface-muted: #f6f5f3;
+  --ttb-ink: #1d1b18;
+  --ttb-ink-muted: #5c5750;
+  --ttb-line: #e6e2dc;
+  --ttb-accent: #3d5afe;
+  --ttb-accent-strong: #2a40c8;
+  --ttb-accent-ink: #ffffff;
+  --ttb-good: #1f7a4d;
+  --ttb-warn: #a35c00;
+  --ttb-bad: #b3261e;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ttb-surface: #151412;
+    --ttb-surface-muted: #1f1d1a;
+    --ttb-ink: #f2efea;
+    --ttb-ink-muted: #b0aaa1;
+    --ttb-line: #34312c;
+    --ttb-accent: #8c9eff;
+    --ttb-accent-strong: #b0bcff;
+    --ttb-accent-ink: #10131f;
+    --ttb-good: #6fd19c;
+    --ttb-warn: #f0b45e;
+    --ttb-bad: #f2867f;
+  }
+}
+
+@theme inline {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-surface: var(--ttb-surface);
+  --color-surface-muted: var(--ttb-surface-muted);
+  --color-ink: var(--ttb-ink);
+  --color-ink-muted: var(--ttb-ink-muted);
+  --color-line: var(--ttb-line);
+  --color-accent: var(--ttb-accent);
+  --color-accent-strong: var(--ttb-accent-strong);
+  --color-accent-ink: var(--ttb-accent-ink);
+  --color-good: var(--ttb-good);
+  --color-warn: var(--ttb-warn);
+  --color-bad: var(--ttb-bad);
+}

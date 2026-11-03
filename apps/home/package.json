@@ -1,0 +1,26 @@
+{
+  "name": "@teamtoolbox/home",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --port 4321",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "wrangler dev --port 4322",
+    "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "deploy": "pnpm run build && wrangler deploy",
+    "preview:upload": "pnpm run build && wrangler versions upload --preview-alias pr-$PR_NUMBER"
+  },
+  "dependencies": {
+    "@teamtoolbox/registry": "workspace:*",
+    "@teamtoolbox/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@tailwindcss/vite": "^4.3.0",
+    "@teamtoolbox/tsconfig": "workspace:*",
+    "astro": "^7.4.4",
+    "tailwindcss": "^4.3.0",
+    "wrangler": "^4.156.1"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "teamtoolbox",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "check": "biome check .",
+    "format": "biome check --write .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "check:headers": "node scripts/check-headers.ts",
+    "dev:home": "pnpm --filter @teamtoolbox/home dev",
+    "dev:rooms": "pnpm --filter @teamtoolbox/rooms dev",
+    "dev:ads": "pnpm --filter @teamtoolbox/ads dev"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.4",
+    "@types/node": "^26.6.6",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.12"
+  }
+}

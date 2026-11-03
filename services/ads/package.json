@@ -1,0 +1,23 @@
+{
+  "name": "@teamtoolbox/ads",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8788 --var ALLOWED_HOST_SUFFIXES:localhost",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "deploy": "wrangler deploy --env=\"\"",
+    "preview:upload": "wrangler deploy --env staging"
+  },
+  "dependencies": {
+    "@teamtoolbox/protocol": "workspace:*",
+    "@teamtoolbox/registry": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.5.0",
+    "@cloudflare/workers-types": "^5.20261101.1",
+    "@teamtoolbox/tsconfig": "workspace:*",
+    "wrangler": "^4.156.1"
+  }
+}

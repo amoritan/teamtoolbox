@@ -1,0 +1,5 @@
+Contact: https://teamtoolbox.org/security#report
+Expires: 2027-11-01T00:00:00.000Z
+Policy: https://teamtoolbox.org/security
+Preferred-Languages: en
+Canonical: https://teamtoolbox.org/.well-known/security.txt

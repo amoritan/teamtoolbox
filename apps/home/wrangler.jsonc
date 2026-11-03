@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Static assets only: no server code runs for the directory site.
+  "name": "home",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "preview_urls": true,
+  "routes": [{ "pattern": "teamtoolbox.org", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "send_metrics": false
+}

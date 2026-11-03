@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ads",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "minify": true,
+  "workers_dev": false,
+  "routes": [{ "pattern": "ads.teamtoolbox.org", "custom_domain": true }],
+  // Aggregate impression and click counts per ad, per tool. No identifiers, no IPs.
+  "analytics_engine_datasets": [{ "binding": "AD_EVENTS", "dataset": "ad_events" }],
+  "vars": {
+    // Extra origin host suffixes allowed besides <tool>.teamtoolbox.org. Empty in production.
+    "ALLOWED_HOST_SUFFIXES": ""
+  },
+  "observability": { "enabled": false },
+  "send_metrics": false,
+  "env": {
+    "staging": {
+      "workers_dev": true,
+      "routes": [],
+      "analytics_engine_datasets": [{ "binding": "AD_EVENTS", "dataset": "ad_events_staging" }],
+      "vars": {
+        "ALLOWED_HOST_SUFFIXES": ".workers.dev,localhost"
+      }
+    }
+  }
+}
