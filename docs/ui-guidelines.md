@@ -87,7 +87,7 @@ Eight colours that tell people apart: rose, orange, olive, green, teal, blue, pu
 
 ### Typography
 
-- The system font stack only. Tool pages can't load third-party fonts (§10.4), and a self-hosted font would wait for the branding decision (spec §18, question 13).
+- The system font stack only, the wordmark included. Tool pages can't load third-party fonts (§10.4), and the brand doesn't need a font of its own (see Logo, below).
 - Sizes: `text-sm` for UI controls and metadata, `text-base` for reading text, and `text-xl` to `text-2xl` for page and room titles. Use at most three sizes on one screen.
 - Keep prose lines under about 70 characters. Use `tabular-nums` for counts, votes and timers so numbers don't jump around.
 
@@ -105,6 +105,16 @@ Eight colours that tell people apart: rose, orange, olive, green, teal, blue, pu
 - **Next to a text label,** leave the icon as it is. Lucide adds `aria-hidden="true"` itself unless you pass an `aria-*`, `role` or `title` prop.
 - **On its own,** an icon button needs an accessible name (`aria-label` on the button, not the icon) and a tooltip with the same words.
 - Before drawing a custom icon, check Lucide's catalogue. A missing icon is a reason to draw one in Lucide's style (24 px grid, 2 px round strokes), not to add a second set.
+
+### Logo
+
+The mark is four rounded tiles, like the directory's grid of tools, with one in the accent colour: the tool you're using. Next to it, the wordmark reads "team" in regular and "toolbox" in bold.
+
+- **Use the components:** `<Logo>` from `@teamtoolbox/ui` in React, `Logo.astro` on the directory site. Both draw from the same geometry in `packages/ui/src/mark.ts`. Don't copy the SVG elsewhere.
+- **Colours come from tokens:** three tiles in `ink`, one in `accent`, so the mark follows light and dark mode by itself. Don't recolour, outline, rotate or rearrange the tiles, and don't put the mark on a coloured background.
+- **The wordmark is real text** in the system font, so it's selectable, translatable and costs no font download. It reads as one word to screen readers, and the mark next to it is hidden. On its own, the mark is labelled "teamtoolbox".
+- **Sizes:** at least 16 px for the mark. Leave at least one tile's width of space around the whole logo.
+- **Favicon:** `apps/home/public/favicon.svg` uses slightly larger tiles for 16 px and switches colours with `prefers-color-scheme`. Tool apps will reuse it.
 
 ### Motion
 
@@ -241,29 +251,29 @@ Match how loud a message is to how much it matters:
 
 Shared components live in `packages/ui`. A component moves there when a second tool needs it, or when it carries a pattern from this guide (like the confirmation dialog). Otherwise it stays in its tool.
 
-| Component                    | Status  | Notes                                                            |
-| ---------------------------- | ------- | ---------------------------------------------------------------- |
-| `AppShell`                   | Exists  | Header, main, footer and ad slot                                 |
-| `Button`                     | Exists  | Primary and secondary. Needs a `danger` variant and a busy state |
-| `PrivacyBadge`               | Exists  |                                                                  |
-| `AdSlot`                     | Exists  | Fixed 320 × 100 px, hidden when printing                         |
-| `Dialog`, `ConfirmDialog`    | Planned | Radix Dialog (§5.5, §5.6)                                        |
-| `Menu`, `Popover`, `Tooltip` | Planned | Radix (§5.6, §5.11)                                              |
-| `Toast` with Undo            | Planned | Our own small component with a live region (§5.4)                |
-| `CopyLinkButton`, `QrCode`   | Planned | QR code generated locally (§5.2)                                 |
-| `Field`, `TextArea`          | Planned | Label, hint, error and counter (§5.7)                            |
-| `PresenceList`, `Avatar`     | Planned | §5.3                                                             |
-| `ConnectionBanner`           | Planned | §5.3                                                             |
-| `Skeleton`, `EmptyState`     | Planned | §5.8                                                             |
+| Component                    | Status  | Notes                                                               |
+| ---------------------------- | ------- | ------------------------------------------------------------------- |
+| `AppShell`                   | Exists  | Header, main, footer and ad slot                                    |
+| `Logo`                       | Exists  | The grid mark and wordmark (§3). `Logo.astro` on the directory site |
+| `Button`                     | Exists  | Primary and secondary. Needs a `danger` variant and a busy state    |
+| `PrivacyBadge`               | Exists  |                                                                     |
+| `AdSlot`                     | Exists  | Fixed 320 × 100 px, hidden when printing                            |
+| `Dialog`, `ConfirmDialog`    | Planned | Radix Dialog (§5.5, §5.6)                                           |
+| `Menu`, `Popover`, `Tooltip` | Planned | Radix (§5.6, §5.11)                                                 |
+| `Toast` with Undo            | Planned | Our own small component with a live region (§5.4)                   |
+| `CopyLinkButton`, `QrCode`   | Planned | QR code generated locally (§5.2)                                    |
+| `Field`, `TextArea`          | Planned | Label, hint, error and counter (§5.7)                               |
+| `PresenceList`, `Avatar`     | Planned | §5.3                                                                |
+| `ConnectionBanner`           | Planned | §5.3                                                                |
+| `Skeleton`, `EmptyState`     | Planned | §5.8                                                                |
 
 ## 8. Known gaps
 
 To settle before the first tool (M1) ships:
 
-1. **Branding:** logo and colours (spec §18, question 13). Until then, the wordmark is "teamtoolbox" in semibold text.
-2. **Automated accessibility checks:** axe in the Playwright end-to-end tests. Token contrast is already checked by `theme.test.ts`.
+1. **Automated accessibility checks:** axe in the Playwright end-to-end tests. Token contrast is already checked by `theme.test.ts`.
 
-Closed: the form control border (`line-strong`) and the participant palette (§3), and the icon set (Lucide, §3).
+Closed: the form control border (`line-strong`), the participant palette, the icon set (Lucide) and the branding (the grid logo with the indigo accent), all in §3.
 
 ## 9. Review checklist
 

@@ -1,6 +1,7 @@
 import { SITE_LINKS, type Tool } from '@teamtoolbox/registry'
 import type { ReactNode } from 'react'
 import { AdSlot } from './AdSlot'
+import { Logo } from './Logo'
 import { PrivacyBadge } from './PrivacyBadge'
 
 export interface AppShellProps {
@@ -17,8 +18,8 @@ export function AppShell({ tool, children, adsUrl }: AppShellProps) {
       <header className="border-b border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2 text-sm">
-            <a href={SITE_LINKS.home} className="font-semibold hover:text-accent">
-              teamtoolbox
+            <a href={SITE_LINKS.home} className="hover:text-accent">
+              <Logo size={20} />
             </a>
             <span aria-hidden="true" className="text-ink-muted">
               /
