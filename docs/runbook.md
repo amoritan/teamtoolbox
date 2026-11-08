@@ -52,9 +52,12 @@ The domain has no mailboxes, only forwarding (spec §10.3):
 
 To forward somewhere else, add and verify the new inbox under Email Routing → Destination addresses, then edit both routing rules.
 
-### 4. Analytics Engine
+### 4. Workers account setup
 
-Turn on Workers Analytics Engine once for the account (Workers & Pages → Analytics Engine). The ads service writes its view and click counts there, and Cloudflare rejects its deploy with error 10089 until it's on. It's included in the Free plan.
+Two one-time steps, or the first deploy fails:
+
+- **workers.dev subdomain:** open Workers & Pages in the dashboard once, which creates it. Without it, Cloudflare rejects deploys with error 10063, even though production doesn't serve from workers.dev. Previews and staging do. This account's subdomain is `amoritan.workers.dev`.
+- **Analytics Engine:** turn it on under Storage & databases → Analytics Engine. The ads service writes its view and click counts there, and Cloudflare rejects its deploy with error 10089 until it's on. It's included in the Free plan.
 
 ### 5. First deploy
 
