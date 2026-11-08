@@ -39,17 +39,21 @@ How to check: use the page with the keyboard only, do a quick pass with VoiceOve
 
 Measured from `packages/ui/src/theme.css`:
 
-| Pair                                 | Light     | Dark       | Fine for                     |
-| ------------------------------------ | --------- | ---------- | ---------------------------- |
-| `ink` on `surface`                   | 17.2:1    | 16.1:1     | Any text                     |
-| `ink-muted` on `surface`             | 7.2:1     | 8.0:1      | Any text                     |
-| `ink-muted` on `surface-muted`       | 6.6:1     | 7.3:1      | Any text                     |
-| `accent` on `surface`                | 5.1:1     | 7.4:1      | Links, focus ring, text      |
-| `accent-ink` on `accent`             | 5.1:1     | 7.5:1      | Primary button text          |
-| `good` / `warn` / `bad` on `surface` | 5.1–6.5:1 | 7.4–10.0:1 | Status text and icons        |
-| `line` on `surface`                  | 1.3:1     | 1.4:1      | **Decorative dividers only** |
+| Pair                                      | Light     | Dark       | Fine for                           |
+| ----------------------------------------- | --------- | ---------- | ---------------------------------- |
+| `ink` on `surface`                        | 17.2:1    | 16.1:1     | Any text                           |
+| `ink-muted` on `surface`                  | 7.2:1     | 8.0:1      | Any text                           |
+| `ink-muted` on `surface-muted`            | 6.6:1     | 7.3:1      | Any text                           |
+| `accent` on `surface`                     | 5.1:1     | 7.4:1      | Links, focus ring, text            |
+| `accent-ink` on `accent`                  | 5.1:1     | 7.5:1      | Primary button text                |
+| `good` / `warn` / `bad` on `surface`      | 5.1–6.5:1 | 7.4–10.0:1 | Status text and icons              |
+| `line-strong` on either surface           | 3.2–3.5:1 | 3.2–3.5:1  | Form control borders               |
+| `participant-1` to `-8` on either surface | 4.6–5.5:1 | 4.6–4.7:1  | Avatars and markers, with initials |
+| `line` on `surface`                       | 1.3:1     | 1.4:1      | **Decorative dividers only**       |
 
-`line` is too faint to be the only thing that shows where an input is. Form controls need a stronger border token first (see §8).
+`line` is too faint to show where an input is, so form controls use `line-strong`.
+
+`packages/ui/test/theme.test.ts` checks every pair in this table, in both modes and on both surfaces. `pnpm test` fails if a change to `theme.css` drops one below its WCAG minimum.
 
 ## 3. Visual foundations
 
@@ -57,23 +61,33 @@ Measured from `packages/ui/src/theme.css`:
 
 Use the tokens through their Tailwind names (`bg-surface`, `text-ink-muted`, `border-line` and so on). Apps never use raw hex values, so dark mode works everywhere without extra effort. Check both modes anyway.
 
-| Token                     | Use for                                                      |
-| ------------------------- | ------------------------------------------------------------ |
-| `surface`                 | Page background, cards                                       |
-| `surface-muted`           | Secondary areas: side panels, the ad card, hover backgrounds |
-| `ink`                     | Main text                                                    |
-| `ink-muted`               | Secondary text, hints, metadata                              |
-| `line`                    | Dividers and card outlines that are decoration               |
-| `accent`, `accent-strong` | The primary action, links, focus, the current selection      |
-| `accent-ink`              | Text on an accent background                                 |
-| `good`, `warn`, `bad`     | Status meaning only, always with an icon and a label         |
+| Token                     | Use for                                                           |
+| ------------------------- | ----------------------------------------------------------------- |
+| `surface`                 | Page background, cards                                            |
+| `surface-muted`           | Secondary areas: side panels, the ad card, hover backgrounds      |
+| `ink`                     | Main text                                                         |
+| `ink-muted`               | Secondary text, hints, metadata                                   |
+| `line`                    | Dividers and card outlines that are decoration                    |
+| `line-strong`             | Borders of inputs, text areas, checkboxes and other form controls |
+| `accent`, `accent-strong` | The primary action, links, focus, the current selection           |
+| `accent-ink`              | Text on an accent background                                      |
+| `good`, `warn`, `bad`     | Status meaning only, always with an icon and a label              |
+| `participant-1` to `-8`   | Who's who: avatars, card author markers, cursors                  |
 
 - One primary (accent) button per view. Everything else is secondary.
-- Participant colours (presence, card authors) need their own palette. They always come with a name or initials, never alone (see §8).
+
+#### Participant colours
+
+Eight colours that tell people apart: rose, orange, olive, green, teal, blue, purple and magenta, as `bg-participant-1` to `bg-participant-8`.
+
+- **Always with a name or initials.** An avatar is a circle in the participant's colour with their initials in `text-surface`. The colours are dark enough (light mode) or light enough (dark mode) for that.
+- **Assigned in join order,** cycling after the eighth person. Each person keeps their colour for the whole room.
+- **Never for anything else.** No status, selection or emphasis. The palette keeps away from the accent's hue so an avatar never looks selected, but its orange and rose are near `warn` and `bad`, so the two sets must never mean the same thing.
+- **How they were chosen:** hues at least 35° apart in OKLCH, away from the accent's hue, each made as vivid as possible while reaching 4.6:1 on both surfaces. Colour-blind people may still confuse some pairs, which is another reason names always come first.
 
 ### Typography
 
-- The system font stack only. Tool pages can't load third-party fonts (§10.4), and a self-hosted font would wait for the branding decision (spec §18, question 13).
+- The system font stack only, the wordmark included. Tool pages can't load third-party fonts (§10.4), and the brand doesn't need a font of its own (see Logo, below).
 - Sizes: `text-sm` for UI controls and metadata, `text-base` for reading text, and `text-xl` to `text-2xl` for page and room titles. Use at most three sizes on one screen.
 - Keep prose lines under about 70 characters. Use `tabular-nums` for counts, votes and timers so numbers don't jump around.
 
@@ -85,9 +99,22 @@ Use the tokens through their Tailwind names (`bg-surface`, `text-ink-muted`, `bo
 
 ### Icons
 
-- Inline SVG in `currentColor`, bundled with the app. No icon fonts and no icons loaded from a CDN.
-- Next to a text label, an icon is `aria-hidden`. On its own, the button needs an accessible name and a tooltip.
-- Pick one icon set and use only that (see §8).
+- **[Lucide](https://lucide.dev), and only Lucide** (ISC licence). In React, import icons by name from `lucide-react`, for example `import { LockKeyhole } from 'lucide-react'`. Only the icons a tool imports end up in its bundle. If the directory site ever needs icons, use `@lucide/astro`.
+- Icons are inline SVG in `currentColor`, bundled with the app. No icon fonts, and nothing loaded from a CDN.
+- Size icons with classes: `size-4` next to `text-sm`, `size-3.5` next to `text-xs`. Keep Lucide's default 2 px stroke. Never pass `style`, which the CSP blocks when it's rendered as an HTML attribute.
+- **Next to a text label,** leave the icon as it is. Lucide adds `aria-hidden="true"` itself unless you pass an `aria-*`, `role` or `title` prop.
+- **On its own,** an icon button needs an accessible name (`aria-label` on the button, not the icon) and a tooltip with the same words.
+- Before drawing a custom icon, check Lucide's catalogue. A missing icon is a reason to draw one in Lucide's style (24 px grid, 2 px round strokes), not to add a second set.
+
+### Logo
+
+The mark is four rounded tiles, like the directory's grid of tools, with one in the accent colour: the tool you're using. Next to it, the wordmark reads "team" in regular and "toolbox" in bold.
+
+- **Use the components:** `<Logo>` from `@teamtoolbox/ui` in React, `Logo.astro` on the directory site. Both draw from the same geometry in `packages/ui/src/mark.ts`. Don't copy the SVG elsewhere.
+- **Colours come from tokens:** three tiles in `ink`, one in `accent`, so the mark follows light and dark mode by itself. Don't recolour, outline, rotate or rearrange the tiles, and don't put the mark on a coloured background.
+- **The wordmark is real text** in the system font, so it's selectable, translatable and costs no font download. It reads as one word to screen readers, and the mark next to it is hidden. On its own, the mark is labelled "teamtoolbox".
+- **Sizes:** at least 16 px for the mark. Leave at least one tile's width of space around the whole logo.
+- **Favicon:** `apps/home/public/favicon.svg` uses slightly larger tiles for 16 px and switches colours with `prefers-color-scheme`. Tool apps will reuse it.
 
 ### Motion
 
@@ -224,30 +251,29 @@ Match how loud a message is to how much it matters:
 
 Shared components live in `packages/ui`. A component moves there when a second tool needs it, or when it carries a pattern from this guide (like the confirmation dialog). Otherwise it stays in its tool.
 
-| Component                    | Status  | Notes                                                            |
-| ---------------------------- | ------- | ---------------------------------------------------------------- |
-| `AppShell`                   | Exists  | Header, main, footer and ad slot                                 |
-| `Button`                     | Exists  | Primary and secondary. Needs a `danger` variant and a busy state |
-| `PrivacyBadge`               | Exists  |                                                                  |
-| `AdSlot`                     | Exists  | Fixed 320 × 100 px, hidden when printing                         |
-| `Dialog`, `ConfirmDialog`    | Planned | Radix Dialog (§5.5, §5.6)                                        |
-| `Menu`, `Popover`, `Tooltip` | Planned | Radix (§5.6, §5.11)                                              |
-| `Toast` with Undo            | Planned | Our own small component with a live region (§5.4)                |
-| `CopyLinkButton`, `QrCode`   | Planned | QR code generated locally (§5.2)                                 |
-| `Field`, `TextArea`          | Planned | Label, hint, error and counter (§5.7)                            |
-| `PresenceList`, `Avatar`     | Planned | §5.3                                                             |
-| `ConnectionBanner`           | Planned | §5.3                                                             |
-| `Skeleton`, `EmptyState`     | Planned | §5.8                                                             |
+| Component                    | Status  | Notes                                                               |
+| ---------------------------- | ------- | ------------------------------------------------------------------- |
+| `AppShell`                   | Exists  | Header, main, footer and ad slot                                    |
+| `Logo`                       | Exists  | The grid mark and wordmark (§3). `Logo.astro` on the directory site |
+| `Button`                     | Exists  | Primary and secondary. Needs a `danger` variant and a busy state    |
+| `PrivacyBadge`               | Exists  |                                                                     |
+| `AdSlot`                     | Exists  | Fixed 320 × 100 px, hidden when printing                            |
+| `Dialog`, `ConfirmDialog`    | Planned | Radix Dialog (§5.5, §5.6)                                           |
+| `Menu`, `Popover`, `Tooltip` | Planned | Radix (§5.6, §5.11)                                                 |
+| `Toast` with Undo            | Planned | Our own small component with a live region (§5.4)                   |
+| `CopyLinkButton`, `QrCode`   | Planned | QR code generated locally (§5.2)                                    |
+| `Field`, `TextArea`          | Planned | Label, hint, error and counter (§5.7)                               |
+| `PresenceList`, `Avatar`     | Planned | §5.3                                                                |
+| `ConnectionBanner`           | Planned | §5.3                                                                |
+| `Skeleton`, `EmptyState`     | Planned | §5.8                                                                |
 
 ## 8. Known gaps
 
 To settle before the first tool (M1) ships:
 
-1. **A border token for form controls** with at least 3:1 contrast in both modes. `line` (1.3:1) is only for decoration.
-2. **A participant colour palette** of about 8 colours, each at least 3:1 against `surface` in both modes.
-3. **Branding:** logo and colours (spec §18, question 13). Until then, the wordmark is "teamtoolbox" in semibold text.
-4. **An icon set:** one bundled set, chosen once.
-5. **Automated accessibility checks:** axe in the Playwright end-to-end tests.
+1. **Automated accessibility checks:** axe in the Playwright end-to-end tests. Token contrast is already checked by `theme.test.ts`.
+
+Closed: the form control border (`line-strong`), the participant palette, the icon set (Lucide) and the branding (the grid logo with the indigo accent), all in §3.
 
 ## 9. Review checklist
 

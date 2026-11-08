@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./mark": "./src/mark.ts",
     "./theme.css": "./src/theme.css"
   },
   "scripts": {
@@ -13,7 +14,8 @@
   },
   "dependencies": {
     "@teamtoolbox/protocol": "workspace:*",
-    "@teamtoolbox/registry": "workspace:*"
+    "@teamtoolbox/registry": "workspace:*",
+    "lucide-react": "^1.70.0"
   },
   "peerDependencies": {
     "react": "^19.3.0",
