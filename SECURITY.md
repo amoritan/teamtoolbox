@@ -4,7 +4,7 @@ teamtoolbox's whole promise is that we can't read your team's data, so security 
 
 ## Reporting a vulnerability
 
-Please report vulnerabilities privately through GitHub's **private vulnerability reporting** on this repository (Security tab → "Report a vulnerability"). Don't open a public issue.
+Please report vulnerabilities privately through GitHub's **private vulnerability reporting** on this repository (Security tab → "Report a vulnerability"). Don't open a public issue. If you can't use GitHub, email security@teamtoolbox.org.
 
 Include what you found, how to reproduce it, and what an attacker could do with it. We'll acknowledge your report as quickly as we can and keep you updated while we fix it.
 

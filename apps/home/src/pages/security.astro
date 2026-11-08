@@ -1,4 +1,5 @@
 ---
+import { SITE_LINKS } from '@teamtoolbox/registry'
 import Page from '../layouts/Page.astro'
 ---
 
@@ -83,12 +84,14 @@ import Page from '../layouts/Page.astro'
   <h2 id="verify">Check it yourself</h2>
   <p>
     teamtoolbox is open source under the AGPL-3.0 license, so all of the above can be checked
-    against the code. <a href="/about#source">Where to find the source</a>.
+    against the code. <a href={SITE_LINKS.source}>Read the source on GitHub</a>.
   </p>
 
   <h2 id="report">Reporting a vulnerability</h2>
   <p>
-    Please report security issues privately using GitHub's private vulnerability reporting on our
-    repository, rather than in a public issue. We'll acknowledge reports as quickly as we can.
+    Please report security issues privately, rather than in a public issue.
+    Use <a href={`${SITE_LINKS.source}/security/advisories/new`}>GitHub's private vulnerability reporting</a>.
+    If you can't use GitHub, email <a href="mailto:security@teamtoolbox.org">security@teamtoolbox.org</a>.
+    We'll acknowledge reports as quickly as we can.
   </p>
 </Page>

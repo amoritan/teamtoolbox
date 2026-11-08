@@ -1,4 +1,5 @@
 ---
+import { SITE_LINKS } from '@teamtoolbox/registry'
 import Page from '../layouts/Page.astro'
 ---
 
@@ -60,13 +61,12 @@ import Page from '../layouts/Page.astro'
   <h2>Your rights</h2>
   <p>
     Because we don't know who you are and can't read room contents, there's usually nothing we can
-    link to you. You can delete shared rooms yourself at any time. For any other question, contact
-    us via the details on our <a href="/about">about page</a>.
+    link to you. You can delete shared rooms yourself at any time. For any other question, email <a href="mailto:privacy@teamtoolbox.org">privacy@teamtoolbox.org</a>.
   </p>
 
   <h2>Changes</h2>
   <p>
-    If this policy changes, we'll update this page. The full history is visible in our public
-    repository.
+    If this policy changes, we'll update this page. Every past version is in our public repository:
+    see the <a href={`${SITE_LINKS.source}/commits/main/apps/home/src/pages/privacy.astro`}>full history</a>.
   </p>
 </Page>

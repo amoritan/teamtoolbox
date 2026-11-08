@@ -3,6 +3,7 @@ name: Preview
 # Uploads preview versions of changed apps and deploys changed services to staging.
 # Pull requests from forks never get here with secrets: GitHub withholds them, and
 # the job is skipped. A maintainer can re-run it after reviewing the code.
+# Dependabot pull requests are skipped too: their runs get no environment secrets.
 
 on:
   pull_request:
@@ -20,7 +21,9 @@ env:
 
 jobs:
   preview:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     environment: preview
     steps:

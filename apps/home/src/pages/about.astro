@@ -1,5 +1,8 @@
 ---
+import { SITE_LINKS } from '@teamtoolbox/registry'
 import Page from '../layouts/Page.astro'
+
+const repoName = SITE_LINKS.source.replace('https://', '')
 ---
 
 <Page title="About" description="Why teamtoolbox exists and how it's built.">
@@ -16,12 +19,18 @@ import Page from '../layouts/Page.astro'
   <h2 id="source">Source code</h2>
   <p>
     teamtoolbox is open source under the AGPL-3.0 license, so anyone can check how it handles data.
-    The repository link will be published here at launch.
+    The code is on GitHub at <a href={SITE_LINKS.source}>{repoName}</a>.
   </p>
 
   <h2 id="suggest">Suggest a tool</h2>
   <p>
-    Missing something your team needs? Ideas are very welcome. Once the repository is public, open an
-    issue there to suggest a tool.
+    Missing something your team needs? Ideas are very welcome.
+    To suggest a tool, <a href={`${SITE_LINKS.source}/issues/new`}>open an issue on GitHub</a>.
+  </p>
+
+  <h2 id="contact">Contact</h2>
+  <p>
+    For questions about privacy or your data, email <a href="mailto:privacy@teamtoolbox.org">privacy@teamtoolbox.org</a>.
+    To report a security issue, see <a href="/security#report">reporting a vulnerability</a>.
   </p>
 </Page>
