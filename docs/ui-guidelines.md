@@ -99,9 +99,12 @@ Eight colours that tell people apart: rose, orange, olive, green, teal, blue, pu
 
 ### Icons
 
-- Inline SVG in `currentColor`, bundled with the app. No icon fonts and no icons loaded from a CDN.
-- Next to a text label, an icon is `aria-hidden`. On its own, the button needs an accessible name and a tooltip.
-- Pick one icon set and use only that (see §8).
+- **[Lucide](https://lucide.dev), and only Lucide** (ISC licence). In React, import icons by name from `lucide-react`, for example `import { LockKeyhole } from 'lucide-react'`. Only the icons a tool imports end up in its bundle. If the directory site ever needs icons, use `@lucide/astro`.
+- Icons are inline SVG in `currentColor`, bundled with the app. No icon fonts, and nothing loaded from a CDN.
+- Size icons with classes: `size-4` next to `text-sm`, `size-3.5` next to `text-xs`. Keep Lucide's default 2 px stroke. Never pass `style`, which the CSP blocks when it's rendered as an HTML attribute.
+- **Next to a text label,** leave the icon as it is. Lucide adds `aria-hidden="true"` itself unless you pass an `aria-*`, `role` or `title` prop.
+- **On its own,** an icon button needs an accessible name (`aria-label` on the button, not the icon) and a tooltip with the same words.
+- Before drawing a custom icon, check Lucide's catalogue. A missing icon is a reason to draw one in Lucide's style (24 px grid, 2 px round strokes), not to add a second set.
 
 ### Motion
 
@@ -258,10 +261,9 @@ Shared components live in `packages/ui`. A component moves there when a second t
 To settle before the first tool (M1) ships:
 
 1. **Branding:** logo and colours (spec §18, question 13). Until then, the wordmark is "teamtoolbox" in semibold text.
-2. **An icon set:** one bundled set, chosen once.
-3. **Automated accessibility checks:** axe in the Playwright end-to-end tests. Token contrast is already checked by `theme.test.ts`.
+2. **Automated accessibility checks:** axe in the Playwright end-to-end tests. Token contrast is already checked by `theme.test.ts`.
 
-Closed: the form control border (`line-strong`) and the participant palette (§3).
+Closed: the form control border (`line-strong`) and the participant palette (§3), and the icon set (Lucide, §3).
 
 ## 9. Review checklist
 
