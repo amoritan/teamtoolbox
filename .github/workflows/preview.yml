@@ -37,7 +37,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Upload previews of changed apps and services
-        run: pnpm --filter "...[origin/${{ github.base_ref }}]" run --if-present preview:upload
+        run: node scripts/deploy-changed.ts preview:upload "origin/${{ github.base_ref }}"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
