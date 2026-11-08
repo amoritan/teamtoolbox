@@ -391,6 +391,7 @@ teamtoolbox/
 ├── docs/
 │   ├── tech-spec.md          # this document
 │   ├── runbook.md            # one-time Cloudflare account/zone settings, deploy and rollback
+│   ├── ui-guidelines.md      # how the UI looks and behaves
 │   └── decisions/            # short ADRs, one per significant decision
 ├── .github/workflows/        # ci.yml, deploy.yml
 ├── biome.json
@@ -787,7 +788,7 @@ The v0.1 design used **Firebase Hosting** (one site per subdomain) and **Cloud F
 10. **Order and naming:** retro first, then health check? (Your message said `heathcheck`; I've assumed `healthcheck`.)
 11. **Facilitation:** are trust-based facilitator controls OK for v1?
 12. **Language:** English only at launch?
-13. **Branding:** do you have a logo or colours, or should I propose a simple visual identity?
+13. ~~**Branding**~~ **Decided:** a grid mark (four tiles, one in the accent) with a system-font wordmark, keeping the indigo accent. See the [UI guidelines](ui-guidelines.md), §3.
 
 ### Monetisation and legal
 

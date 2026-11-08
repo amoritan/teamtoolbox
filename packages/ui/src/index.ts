@@ -1,4 +1,6 @@
 export { AdSlot, DEFAULT_ADS_URL, FALLBACK_AD } from './AdSlot'
 export { AppShell, type AppShellProps } from './AppShell'
 export { Button, type ButtonProps } from './Button'
+export { Logo, type LogoProps } from './Logo'
+export { MARK_TILES, MARK_TONE_CLASS, MARK_VIEWBOX, type MarkTile, WORDMARK } from './mark'
 export { PrivacyBadge } from './PrivacyBadge'

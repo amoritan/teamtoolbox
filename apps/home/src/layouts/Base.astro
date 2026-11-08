@@ -1,5 +1,6 @@
 ---
 import { SITE_LINKS } from '@teamtoolbox/registry'
+import Logo from '../components/Logo.astro'
 import '../styles/global.css'
 
 interface Props {
@@ -30,7 +31,7 @@ const year = new Date().getFullYear()
   <body class="flex min-h-dvh flex-col">
     <header class="border-b border-line">
       <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
-        <a href="/" class="text-lg font-semibold tracking-tight hover:text-accent">teamtoolbox</a>
+        <a href="/" class="text-lg hover:text-accent"><Logo size={24} /></a>
         <nav aria-label="Main" class="flex gap-5 text-sm text-ink-muted">
           <a href="/" class="hover:text-ink">Tools</a>
           <a href="/security" class="hover:text-ink">Security</a>

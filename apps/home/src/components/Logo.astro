@@ -1,0 +1,29 @@
+---
+// The same logo as @teamtoolbox/ui's React <Logo>, drawn from the same geometry.
+import { MARK_TILES, MARK_TONE_CLASS, MARK_VIEWBOX, WORDMARK } from '@teamtoolbox/ui/mark'
+
+interface Props {
+  /** The mark's size in px. The wordmark follows the surrounding font size. */
+  size?: number
+}
+
+const { size = 24 } = Astro.props
+---
+
+<span class="inline-flex items-center gap-2">
+  <svg viewBox={MARK_VIEWBOX} width={size} height={size} class="shrink-0" aria-hidden="true">
+    {
+      MARK_TILES.map((tile) => (
+        <rect
+          x={tile.x}
+          y={tile.y}
+          width={tile.size}
+          height={tile.size}
+          rx={tile.radius}
+          class={MARK_TONE_CLASS[tile.tone]}
+        />
+      ))
+    }
+  </svg>
+  <span class="tracking-tight"><span class="font-normal">{WORDMARK.light}</span><span class="font-bold">{WORDMARK.bold}</span></span>
+</span>

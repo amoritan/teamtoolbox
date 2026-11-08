@@ -2,7 +2,7 @@
 
 Small, free tools for R&D teams at [teamtoolbox.org](https://teamtoolbox.org). Each tool is its own app on its own subdomain. Shared tools are end-to-end encrypted, so the servers only ever see data they can't read.
 
-The full design is in [docs/tech-spec.md](docs/tech-spec.md). How to set up and deploy is in [docs/runbook.md](docs/runbook.md).
+The full design is in [docs/tech-spec.md](docs/tech-spec.md). How to set up and deploy is in [docs/runbook.md](docs/runbook.md). How the UI should look and behave is in [docs/ui-guidelines.md](docs/ui-guidelines.md).
 
 ## Layout
 
