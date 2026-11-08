@@ -469,7 +469,7 @@ No backend change or infra step is needed. The new tool gets the ad slot from th
   3. Change the nameservers at the registrar to the two Cloudflare gives you, then wait for Cloudflare to mark the zone active (usually minutes, at most a day or two).
   4. Turn DNSSEC on in Cloudflare and add its DS record at the registrar.
   5. Only then deploy the Workers. Their custom domains create the subdomain records automatically.
-- **Email on the domain:**
+- **Email on the domain** (**decided:** forwarding through Cloudflare Email Routing, the second option below, with DMARC `p=reject` kept):
   - **If the domain doesn't receive email:** publish a "null MX" record, SPF `-all`, and DMARC `p=reject`. Nobody can then send spoofed mail as `@teamtoolbox.org`, which matters for a privacy-branded site.
   - **If you want addresses like `security@` or `privacy@`** (for `security.txt` and the privacy policy): Cloudflare Email Routing can forward them free to your personal inbox, without hosting a mailbox.
 - Each Worker declares its hostname in `wrangler.jsonc`, and Cloudflare creates the DNS record and certificate on deploy.
@@ -769,9 +769,9 @@ The v0.1 design used **Firebase Hosting** (one site per subdomain) and **Cloud F
 
 ### Platform (blocking M0)
 
-1. ~~**DNS**~~ **Decided:** nameservers move to Cloudflare (§10.3). Still open:
-   - Where is `teamtoolbox.org` registered, and should the registration move to Cloudflare Registrar too?
-   - Email: forward `security@` / `privacy@` to your inbox via Cloudflare Email Routing, or no email on the domain at all (anti-spoofing records only)?
+1. ~~**DNS**~~ **Decided:** nameservers move to Cloudflare, with DNSSEC on (§10.3).
+   - **Email, decided:** Cloudflare Email Routing forwards `security@` and `privacy@` to a personal inbox, and DMARC stays at `p=reject`.
+   - **Still open:** `teamtoolbox.org` is registered at Name.com. Should the registration move to Cloudflare Registrar?
 2. ~~**Data location**~~ **Decided:** EU jurisdiction for room storage (§6.3). It can still be changed later for new rooms if needed.
 3. ~~**Public repo**~~ **Decided:** public (§12 covers CI and secrets).
    - **License, decided:** AGPL-3.0.

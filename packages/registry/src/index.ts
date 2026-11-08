@@ -78,8 +78,8 @@ export const SITE_LINKS = {
   home: `https://${ROOT_DOMAIN}/`,
   privacy: `https://${ROOT_DOMAIN}/privacy`,
   security: `https://${ROOT_DOMAIN}/security`,
-  // Points at the about page until the GitHub repo exists, then straight at the repo.
-  source: `https://${ROOT_DOMAIN}/about#source`,
+  /** The public repository. Every page that links to the code reads it from here. */
+  source: 'https://github.com/amoritan/teamtoolbox',
 } as const
 
 export { isAllowedToolOrigin } from './origins'

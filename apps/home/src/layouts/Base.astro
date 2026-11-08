@@ -1,4 +1,5 @@
 ---
+import { SITE_LINKS } from '@teamtoolbox/registry'
 import '../styles/global.css'
 
 interface Props {
@@ -49,7 +50,7 @@ const year = new Date().getFullYear()
           <a href="/privacy" class="hover:text-ink">Privacy</a>
           <a href="/terms" class="hover:text-ink">Terms</a>
           <a href="/security" class="hover:text-ink">Security</a>
-          <a href="/about#source" class="hover:text-ink">Source code</a>
+          <a href={SITE_LINKS.source} class="hover:text-ink">Source code</a>
         </nav>
       </div>
     </footer>

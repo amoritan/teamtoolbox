@@ -25,6 +25,8 @@ One-time setup, deploys and rollbacks. The design behind all of this is in [tech
 4. At the registrar, replace the nameservers with the two Cloudflare shows. Wait until the zone shows as **Active**.
 5. Turn on DNSSEC in Cloudflare (DNS → Settings) and add the DS record it gives you at the registrar.
 
+`teamtoolbox.org` is registered at Name.com, and its DS record is managed there under Account → DNSSEC. To check that DNSSEC validates, run `dig +dnssec teamtoolbox.org @1.1.1.1` and look for the `ad` flag.
+
 ### 2. Zone settings
 
 | Where in the dashboard      | Setting                                                                                                            |
@@ -40,12 +42,15 @@ One-time setup, deploys and rollbacks. The design behind all of this is in [tech
 
 The script-injecting features must stay off because tool pages promise that no third-party code runs on them. Their CSP would block those scripts anyway, but they'd still cause errors.
 
-### 3. Email records
+### 3. Email
 
-This is still open in the spec (§18, question 1). Pick one:
+The domain has no mailboxes, only forwarding (spec §10.3):
 
-- **No email on the domain:** add `MX @ .` (priority 0, a "null MX"), `TXT @ "v=spf1 -all"` and `TXT _dmarc "v=DMARC1; p=reject"`.
-- **Forwarding only:** enable Email Routing and forward `security@` and `privacy@` to your inbox. Keep the DMARC record.
+- **Email Routing** forwards `security@` and `privacy@` to a personal inbox. The catch-all rule is off, so mail to any other address isn't delivered.
+- Turning on Email Routing adds its own MX, SPF and DKIM records. Leave them as they are.
+- Keep `TXT _dmarc "v=DMARC1; p=reject"`, so nobody can send mail as `@teamtoolbox.org`.
+
+To forward somewhere else, add and verify the new inbox under Email Routing → Destination addresses, then edit both routing rules.
 
 ### 4. First deploy (from your machine)
 
@@ -75,8 +80,8 @@ Each Worker's `routes` entry creates its DNS record and TLS certificate on first
 3. **Cloudflare API token:** in Cloudflare, My Profile → API Tokens → Create Token → template "Edit Cloudflare Workers". Restrict it to your account and the `teamtoolbox.org` zone.
 4. Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as **environment secrets** on both environments, not as repository secrets.
 5. **Branch protection** on `main`: require the `CI / check` status.
-6. **Security** (Settings → Code security): turn on private vulnerability reporting, secret scanning with push protection, and Dependabot alerts. Add Renovate or Dependabot version updates for `npm` and `github-actions`. Consider pinning actions to commit SHAs.
-7. Update `SITE_LINKS.source` in `packages/registry/src/index.ts` and the about page to point at the repository.
+6. **Security** (Settings → Code security): turn on private vulnerability reporting, secret scanning with push protection, Dependabot alerts and Dependabot security updates. Weekly version updates for `npm` and `github-actions` are set up in `.github/dependabot.yml`. Consider pinning actions to commit SHAs.
+7. The repository URL lives in `SITE_LINKS.source` in `packages/registry/src/index.ts`. Every footer and page that links to the code reads it from there, so if the repository moves, change it there.
 
 ## Workflows
 
@@ -107,8 +112,8 @@ The rooms service stores data, so a rollback never undoes Durable Object migrati
 ## Before launch
 
 - [ ] Review the privacy policy and terms, then remove `draft` from both pages
-- [ ] Publish the repository link (GitHub setup, step 7)
-- [ ] Decide on email (above) and add a contact to the about page
+- [x] Publish the repository link (GitHub setup, step 7)
+- [x] Decide on email (above) and add a contact to the about page
 - [ ] Switch to Workers Paid (~$5/month) before any launch push
 - [ ] Apply for AdSense for the directory site once the guide content exists (spec §11.2)
 - [ ] Turn on HSTS, then submit to the preload list
