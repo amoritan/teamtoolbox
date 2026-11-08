@@ -16,12 +16,22 @@
   --ttb-ink: #1d1b18;
   --ttb-ink-muted: #5c5750;
   --ttb-line: #e6e2dc;
+  --ttb-line-strong: #8d8882;
   --ttb-accent: #3d5afe;
   --ttb-accent-strong: #2a40c8;
   --ttb-accent-ink: #ffffff;
   --ttb-good: #1f7a4d;
   --ttb-warn: #a35c00;
   --ttb-bad: #b3261e;
+  /* Participant colours: rose, orange, olive, green, teal, blue, purple, magenta. */
+  --ttb-participant-1: #be425f;
+  --ttb-participant-2: #b94d09;
+  --ttb-participant-3: #77700b;
+  --ttb-participant-4: #2b7f12;
+  --ttb-participant-5: #037a84;
+  --ttb-participant-6: #0975ab;
+  --ttb-participant-7: #8358c1;
+  --ttb-participant-8: #ab4999;
   color-scheme: light dark;
 }
 
@@ -32,12 +42,21 @@
     --ttb-ink: #f2efea;
     --ttb-ink-muted: #b0aaa1;
     --ttb-line: #34312c;
+    --ttb-line-strong: #706c65;
     --ttb-accent: #8c9eff;
     --ttb-accent-strong: #b0bcff;
     --ttb-accent-ink: #10131f;
     --ttb-good: #6fd19c;
     --ttb-warn: #f0b45e;
     --ttb-bad: #f2867f;
+    --ttb-participant-1: #ca6879;
+    --ttb-participant-2: #c47048;
+    --ttb-participant-3: #928a07;
+    --ttb-participant-4: #459831;
+    --ttb-participant-5: #1794a0;
+    --ttb-participant-6: #318dc5;
+    --ttb-participant-7: #9379c2;
+    --ttb-participant-8: #bc69ab;
   }
 }
 
@@ -50,10 +69,19 @@
   --color-ink: var(--ttb-ink);
   --color-ink-muted: var(--ttb-ink-muted);
   --color-line: var(--ttb-line);
+  --color-line-strong: var(--ttb-line-strong);
   --color-accent: var(--ttb-accent);
   --color-accent-strong: var(--ttb-accent-strong);
   --color-accent-ink: var(--ttb-accent-ink);
   --color-good: var(--ttb-good);
   --color-warn: var(--ttb-warn);
   --color-bad: var(--ttb-bad);
+  --color-participant-1: var(--ttb-participant-1);
+  --color-participant-2: var(--ttb-participant-2);
+  --color-participant-3: var(--ttb-participant-3);
+  --color-participant-4: var(--ttb-participant-4);
+  --color-participant-5: var(--ttb-participant-5);
+  --color-participant-6: var(--ttb-participant-6);
+  --color-participant-7: var(--ttb-participant-7);
+  --color-participant-8: var(--ttb-participant-8);
 }
