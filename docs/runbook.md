@@ -52,9 +52,15 @@ The domain has no mailboxes, only forwarding (spec §10.3):
 
 To forward somewhere else, add and verify the new inbox under Email Routing → Destination addresses, then edit both routing rules.
 
-### 4. First deploy (from your machine)
+### 4. Analytics Engine
 
-Log in once with `pnpm --filter @teamtoolbox/rooms exec wrangler login`, then deploy the services before the site:
+Turn on Workers Analytics Engine once for the account (Workers & Pages → Analytics Engine). The ads service writes its view and click counts there, and Cloudflare rejects its deploy with error 10089 until it's on. It's included in the Free plan.
+
+### 5. First deploy
+
+The simplest way is to approve the Deploy workflow's `production` run, which starts on every push to `main`. It deploys the services first, then the site.
+
+To deploy from your machine instead, log in once with `pnpm --filter @teamtoolbox/rooms exec wrangler login`, then deploy the services before the site:
 
 ```bash
 pnpm --filter @teamtoolbox/rooms deploy
@@ -90,6 +96,8 @@ Each Worker's `routes` entry creates its DNS record and TLS certificate on first
 | `ci.yml`      | Every PR and push to `main`    | Biome, headers check, typecheck, tests, build                                                                                                   |
 | `preview.yml` | PRs from branches in this repo | Uploads preview versions of changed apps (`pr-<number>` alias) and deploys changed services to staging. Fork PRs are skipped and get no secrets |
 | `deploy.yml`  | Push to `main`                 | Re-runs checks and tests, then deploys every changed app and service, plus anything that depends on a changed package                           |
+
+Both deploying workflows go through `scripts/deploy-changed.ts`. It runs services before apps, one at a time, and a failed deploy doesn't stop the others. The job still fails if any of them did, and the log ends with which ones.
 
 Preview URLs are printed in the workflow log.
 
