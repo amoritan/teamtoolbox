@@ -1,0 +1,8 @@
+# Security headers for retro.teamtoolbox.org (tech-spec §10.4).
+# Preview builds rewrite the two service origins to their staging versions (scripts/tool-app-vite.ts).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https://ads.teamtoolbox.org; connect-src 'self' wss://rooms.teamtoolbox.org https://ads.teamtoolbox.org; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()

@@ -10,6 +10,9 @@ One-time setup, deploys and rollbacks. The design behind all of this is in [tech
 | `pnpm --filter @teamtoolbox/home preview` | Built directory site through Wrangler, with the real `_headers` | http://localhost:4322 |
 | `pnpm dev:rooms`                          | Rooms service                                                   | ws://localhost:8787   |
 | `pnpm dev:ads`                            | Ads service                                                     | http://localhost:8788 |
+| `pnpm --filter @teamtoolbox/retro dev`    | Retro, talking to the local rooms and ads services              | http://localhost:5173 |
+
+To try a tool as several people, open it on two ports, so each has its own storage. For example, run a second copy with `pnpm --filter @teamtoolbox/retro exec vite --port 5175`. The `.claude/launch.json` configurations set this up, including a rooms service that accepts both ports.
 
 - Local runtimes can't pin Durable Objects to a jurisdiction, so `dev:rooms` and the rooms tests set `ROOM_JURISDICTION=none`. Deployed Workers never set it, and a missing value means EU.
 - Astro and Wrangler telemetry are switched off in the scripts and in CI (`ASTRO_TELEMETRY_DISABLED`, `send_metrics: false`, `WRANGLER_SEND_METRICS=false`).
@@ -129,7 +132,22 @@ The rooms service stores data, so a rollback never undoes Durable Object migrati
 - [ ] Apply for AdSense for the directory site once the guide content exists (spec §11.2)
 - [ ] Turn on HSTS, then submit to the preload list
 
-## Notes for M1 (first tool app)
+## Tool apps
 
-- Tool apps ship their CSP in `public/_headers`. Preview builds talk to `rooms-staging` and `ads-staging` on `workers.dev`, so the build needs to write an environment-specific `_headers`. `scripts/check-headers.ts` must then allow those staging origins for preview builds only.
-- Add each tool's subdomain to its `wrangler.jsonc` `routes`. The first deploy creates the DNS record and certificate.
+- **CSP:** each tool app ships its production CSP in `public/_headers`, and `check:headers` checks it.
+- **Service URLs:** `scripts/tool-app-vite.ts` sets the rooms and ads URLs for each build:
+  - the dev server uses the local services;
+  - production builds use `rooms.` and `ads.teamtoolbox.org`;
+  - preview builds (`TTB_PREVIEW=1`, set by `preview:upload`) use `rooms-staging` and `ads-staging` on `amoritan.workers.dev`, and rewrite exactly those two origins in `dist/_headers`.
+- **Previews need staging:** a tool's preview only works once the staging services are deployed. That happens on the first PR that changes `services/rooms` or `services/ads`, or by hand:
+
+  ```bash
+  pnpm --filter @teamtoolbox/rooms exec wrangler deploy --env staging
+  ```
+
+  ```bash
+  pnpm --filter @teamtoolbox/ads exec wrangler deploy --env staging
+  ```
+
+- **Domains:** add each tool's subdomain to its `wrangler.jsonc` `routes`. The first deploy creates the DNS record and certificate.
+- **Going live:** a tool shows as "Coming soon" on the directory until its registry status moves from `soon` to `beta` or `live`.
