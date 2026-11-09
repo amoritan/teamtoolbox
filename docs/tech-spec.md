@@ -392,6 +392,7 @@ teamtoolbox/
 │   ├── tech-spec.md          # this document
 │   ├── runbook.md            # one-time Cloudflare account/zone settings, deploy and rollback
 │   ├── ui-guidelines.md      # how the UI looks and behaves
+│   ├── tools/                # one spec per tool, e.g. retro.md
 │   └── decisions/            # short ADRs, one per significant decision
 ├── .github/workflows/        # ci.yml, deploy.yml
 ├── biome.json
@@ -667,6 +668,8 @@ _(Not legal advice. Details depend on where you're based.)_
 Detailed functional specs per tool will follow after this document is agreed. These sketches are here to check that the platform fits.
 
 ### 15.1 Retro: `retro.teamtoolbox.org` (collaborative)
+
+The full spec, with the decisions made for M1, is in [tools/retro.md](tools/retro.md). The sketch below is the starting point it grew from.
 
 **Creating a board:**
 
