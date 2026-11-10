@@ -46,9 +46,9 @@ export const tools: readonly Tool[] = [
     name: 'Retro',
     tagline: 'Run a retrospective your whole team can join from one link.',
     description:
-      'Collect cards in columns, reveal them together, group and vote, then agree on action items. No sign-up, and everything is end-to-end encrypted.',
+      'Everyone adds cards to the same board at once, without names. Group them, vote on what matters most, then agree on action items. No sign-up, and everything is end-to-end encrypted.',
     kind: 'collaborative',
-    status: 'soon',
+    status: 'beta',
     category: 'ceremonies',
     adKeywords: ['agile', 'scrum', 'retrospective'],
   },
