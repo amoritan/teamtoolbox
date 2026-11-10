@@ -149,5 +149,6 @@ The rooms service stores data, so a rollback never undoes Durable Object migrati
   pnpm --filter @teamtoolbox/ads exec wrangler deploy --env staging
   ```
 
+- **No preview on a tool's first PR:** a preview is a new version of an existing Worker, and Cloudflare refuses one for a Worker that has never been deployed. The Preview job skips such an app with a notice. Its previews start once its first deploy from main has created the Worker.
 - **Domains:** add each tool's subdomain to its `wrangler.jsonc` `routes`. The first deploy creates the DNS record and certificate.
 - **Going live:** a tool shows as "Coming soon" on the directory until its registry status moves from `soon` to `beta` or `live`.
