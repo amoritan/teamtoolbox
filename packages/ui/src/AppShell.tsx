@@ -15,7 +15,7 @@ export interface AppShellProps {
 export function AppShell({ tool, children, adsUrl }: AppShellProps) {
   return (
     <div className="flex min-h-dvh flex-col bg-surface font-sans text-ink">
-      <header className="border-b border-line">
+      <header className="border-b border-line print:hidden">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2 text-sm">
             <a href={SITE_LINKS.home} className="hover:text-accent">
@@ -32,7 +32,7 @@ export function AppShell({ tool, children, adsUrl }: AppShellProps) {
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
 
-      <footer className="border-t border-line">
+      <footer className="border-t border-line print:hidden">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between">
           <nav
             aria-label="teamtoolbox"

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "@teamtoolbox/ui/theme.css";
+
+@layer base {
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+  }
+}
+
+@page {
+  margin: 16mm;
+}

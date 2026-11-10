@@ -187,7 +187,8 @@ Match how loud a message is to how much it matters:
 
 ### 5.6 Dialogs, popovers and menus
 
-- Build them on Radix Primitives through `packages/ui` wrappers. Radix handles focus trapping, Esc, returning focus and the ARIA attributes.
+- **Dialogs** use `Dialog` and `ConfirmDialog` from `packages/ui`, built on the native `<dialog>` element. The browser traps focus, closes on Esc and returns focus on its own, and no library adds styles at runtime. (Radix Dialog's scroll lock injects a `<style>` tag, which the CSP blocks.)
+- **Menus, popovers and tooltips**, when a tool needs them, go through `packages/ui` wrappers on Radix Primitives, after the CSP check below.
 - **Use a dialog for:** the QR code, confirming irreversible actions, export options and room settings.
 - **Don't use a dialog for:** joining, errors or simple edits. Those stay inline.
 - Every dialog has a title. Only one is open at a time, and a dialog never opens another dialog or a nested flow. Keep the content to one screen. On phones, dialogs become full-width sheets at the bottom of the screen.
@@ -255,17 +256,18 @@ Shared components live in `packages/ui`. A component moves there when a second t
 | ---------------------------- | ------- | ------------------------------------------------------------------- |
 | `AppShell`                   | Exists  | Header, main, footer and ad slot                                    |
 | `Logo`                       | Exists  | The grid mark and wordmark (§3). `Logo.astro` on the directory site |
-| `Button`                     | Exists  | Primary and secondary. Needs a `danger` variant and a busy state    |
+| `Button`                     | Exists  | Primary, secondary, ghost and danger, plus a busy state             |
 | `PrivacyBadge`               | Exists  |                                                                     |
 | `AdSlot`                     | Exists  | Fixed 320 × 100 px, hidden when printing                            |
-| `Dialog`, `ConfirmDialog`    | Planned | Radix Dialog (§5.5, §5.6)                                           |
-| `Menu`, `Popover`, `Tooltip` | Planned | Radix (§5.6, §5.11)                                                 |
-| `Toast` with Undo            | Planned | Our own small component with a live region (§5.4)                   |
-| `CopyLinkButton`, `QrCode`   | Planned | QR code generated locally (§5.2)                                    |
-| `Field`, `TextArea`          | Planned | Label, hint, error and counter (§5.7)                               |
-| `PresenceList`, `Avatar`     | Planned | §5.3                                                                |
-| `ConnectionBanner`           | Planned | §5.3                                                                |
-| `Skeleton`, `EmptyState`     | Planned | §5.8                                                                |
+| `Dialog`, `ConfirmDialog`    | Exists  | Native `<dialog>` (§5.5, §5.6)                                      |
+| `FeedbackProvider`           | Exists  | Toasts with Undo, and screen-reader announcements (§5.4)            |
+| `CopyLinkButton`             | Exists  | Says "Copied" instead of showing a toast (§5.2)                     |
+| `TextField`, `TextArea`      | Exists  | Label, hint, error and counter (§5.7)                               |
+| `Avatar`, `PresenceList`     | Exists  | Participant colours in join order (§3, §5.3)                        |
+| `Menu`, `Popover`, `Tooltip` | Planned | Radix, after a CSP check (§5.6, §5.11)                              |
+| `QrCode`                     | Planned | Generated locally (§5.2)                                            |
+| `ConnectionBanner`           | Planned | Retro has its own for now (§5.3)                                    |
+| `Skeleton`, `EmptyState`     | Planned | Retro has its own for now (§5.8)                                    |
 
 ## 8. Known gaps
 

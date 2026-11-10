@@ -10,12 +10,51 @@
  *   non-zero if anything failed.
  * - Without a since-ref, or with one that isn't in the history (first push, rewritten
  *   history), every app and service runs.
+ * - A preview is a new version of an app's existing Worker, so a brand-new app has no
+ *   preview until its first deploy from main. Its preview is skipped with a notice.
  */
 import { spawnSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 interface DryRunTask {
   project: string
   missingScript: boolean
+}
+
+/** The codes Cloudflare (and wrangler) use for "no Worker with that name". */
+const WORKER_NOT_FOUND = new Set([10007, 10090])
+
+/** The Worker's name from the project's wrangler.jsonc, where it's the first `name` key. */
+function workerName(project: string): string | null {
+  try {
+    const config = readFileSync(join(project, 'wrangler.jsonc'), 'utf8')
+    return /"name"\s*:\s*"([^"]+)"/.exec(config)?.[1] ?? null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * False only when Cloudflare says the Worker doesn't exist. Any other answer, or no
+ * credentials, counts as yes: the upload then runs and reports its own errors.
+ */
+async function workerExists(project: string): Promise<boolean> {
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID
+  const token = process.env.CLOUDFLARE_API_TOKEN
+  const name = workerName(project)
+  if (!accountId || !token || !name) return true
+  try {
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/services/${encodeURIComponent(name)}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    )
+    if (response.ok) return true
+    const body = (await response.json()) as { errors?: { code?: number }[] }
+    return !body.errors?.some((error) => WORKER_NOT_FOUND.has(error.code ?? 0))
+  } catch {
+    return true
+  }
 }
 
 const [script, since] = process.argv.slice(2)
@@ -58,6 +97,17 @@ console.log(`Running "${script}" in order: ${projects.join(', ')}`)
 const failed: string[] = []
 for (const project of projects) {
   console.log(`\n── ${project} ──`)
+  if (
+    script === 'preview:upload' &&
+    project.startsWith('apps/') &&
+    !(await workerExists(project))
+  ) {
+    // A GitHub Actions annotation, so the skip shows on the run's summary page.
+    console.log(
+      `::notice title=No preview for ${project}::Its Worker doesn't exist yet. Previews start after its first deploy from main.`,
+    )
+    continue
+  }
   const result = spawnSync('pnpm', ['--dir', project, 'run', script], { stdio: 'inherit' })
   if (result.status !== 0) failed.push(project)
 }

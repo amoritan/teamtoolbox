@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>teamtoolbox</title>
+  <!-- The grid mark at favicon size: slightly larger tiles, colours from theme.css. -->
+  <style>
+    .ink { fill: #1d1b18; }
+    .accent { fill: #3d5afe; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #f2efea; }
+      .accent { fill: #8c9eff; }
+    }
+  </style>
+  <rect class="ink" x="2" y="2" width="13" height="13" rx="3"/>
+  <rect class="ink" x="17" y="2" width="13" height="13" rx="3"/>
+  <rect class="ink" x="2" y="17" width="13" height="13" rx="3"/>
+  <rect class="accent" x="17" y="17" width="13" height="13" rx="3"/>
+</svg>

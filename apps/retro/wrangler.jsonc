@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Static assets only: the retro runs in the browser and talks to the rooms service.
+  "name": "retro",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "preview_urls": true,
+  "routes": [{ "pattern": "retro.teamtoolbox.org", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "send_metrics": false
+}
